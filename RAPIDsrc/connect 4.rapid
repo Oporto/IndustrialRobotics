@@ -1,0 +1,112 @@
+MODULE Module1
+	CONST robtarget clearance_chip:=[[-200,-1100,400],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget pickup_chip:=[[-200,-1100,100],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_1_clear:=[[46.009,-1145.238,405],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_1:=[[46.009,-1145.238,280],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_2_clear:=[[80.673,-1145.238,405],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_2:=[[80.673,-1145.238,280],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_3_clear:=[[115.336,-1145.238,405],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_3:=[[115.336,-1145.238,280],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_4_clear:=[[150,-1145.238,405],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_4:=[[150,-1145.238,280],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_5_clear:=[[184.664,-1145.238,405],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_5:=[[184.664,-1145.238,280],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_6_clear:=[[219.327,-1145.238,405],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_6:=[[219.327,-1145.238,280],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_7_clear:=[[253.991,-1145.238,405],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget place_7:=[[253.991,-1145.238,280],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PROC main()
+        Play_1;
+        Play_2;
+        Play_3;
+        Play_4;
+        Play_5;
+        Play_6;
+        Play_7;
+    ENDPROC
+!    PROC Suction_Gripper()
+!        SetDO D652_10_D01, low;
+!        WaitTime 0.5;
+!    ENDPROC
+!    PROC Release_Gripper()
+!        SetDO D652_10_D01, high;
+!        WaitTime 0.5;
+!    ENDPROC
+	PROC Play_1()
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
+!        Suction_Gripper;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_1_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_1,v100,fine,Gripper\WObj:=wobj0;
+!        Release_Gripper;
+	    MoveL place_1_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	ENDPROC
+	PROC Play_2()
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
+!        Suction_Gripper;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_2_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_2,v100,fine,Gripper\WObj:=wobj0;
+!        Release_Gripper;
+	    MoveL place_2_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	ENDPROC
+	PROC Play_3()
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
+!        Suction_Gripper;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_3_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_3,v100,fine,Gripper\WObj:=wobj0;
+!        Release_Gripper;
+	    MoveL place_3_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	ENDPROC
+	PROC Play_4()
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
+!        Suction_Gripper;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_4_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_4,v100,fine,Gripper\WObj:=wobj0;
+!        Release_Gripper;
+	    MoveL place_4_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	ENDPROC
+	PROC Play_5()
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
+!        Suction_Gripper;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_5_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_5,v100,fine,Gripper\WObj:=wobj0;
+!        Release_Gripper;
+	    MoveL place_5_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	ENDPROC
+	PROC Play_6()
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
+!        Suction_Gripper;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_6_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_6,v100,fine,Gripper\WObj:=wobj0;
+!        Release_Gripper;
+	    MoveL place_6_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	ENDPROC
+	PROC Play_7()
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
+!        Suction_Gripper;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_7_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL place_7,v100,fine,Gripper\WObj:=wobj0;
+!        Release_Gripper;
+	    MoveL place_7_clear,v200,fine,Gripper\WObj:=wobj0;
+	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	ENDPROC
+ENDMODULE

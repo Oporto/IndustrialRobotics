@@ -88,6 +88,7 @@
     <Content Include="pysource\agent.py" />
     <Content Include="pysource\alpha_beta_agent.py" />
     <Content Include="pysource\board.py" />
+    <Content Include="pysource\CameraVision.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
