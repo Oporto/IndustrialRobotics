@@ -1,0 +1,116 @@
+MODULE Module1
+    CONST robtarget Grab_clear:=[[409.626452686,-960.620461818,97.950502721],[0.210299127,0.452592406,0.738982074,0.452592405],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Grab_block:=[[467.266,-922.336,57.801],[0.210299127,0.452592406,0.738982074,0.452592405],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Block_clear:=[[-66.036,-931.076,146.086],[0,0,1,0],[-2,-2,0,1],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Block_down:=[[-66.036,-931.076,31.086],[0,0,1,0],[-2,-2,0,1],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget FL_clear:=[[-109.713,-902.007,84.953],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget FL_ref:=[[-109.713,-902.007,4.953],[0,1,0,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget RL_clear:=[[-115.171,-1214.696,84.953],[0,1,0,0],[-2,-1,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget RL_ref:=[[-115.171,-1214.696,4.953],[0,1,0,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget RR_clear:=[[73.713,-1217.993,84.953],[0,1,0,0],[-1,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget RR_ref:=[[73.713,-1217.993,4.953],[0,1,0,0],[-1,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget FR_clear:=[[79.171,-905.304,84.953],[0,1,0,0],[-1,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget FR_ref:=[[79.171,-905.304,4.953],[0,1,0,0],[-1,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    VAR num height;
+    height := 0;
+    VAR num row;
+    row :=0;
+    VAR num column;
+    column :=0;
+    VAR btnres answer;
+    !***********************************************************
+    !
+    ! Module:  Module1
+    !
+    ! Description:
+    !   <Insert description here>
+    !
+    ! Author: clema, pdevasconcelloso
+    !
+    ! Version: 2.0
+    !
+    !***********************************************************
+    
+    
+    !***********************************************************
+    !
+    ! Procedure main
+    !
+    !   This is the entry point of your program
+    !
+    !***********************************************************
+    PROC main()
+        WHILE height<2 DO
+            WHILE column<3 DO
+                WHILE row<3 DO
+                    MoveBlock;
+                    TPWrite "Block placed!";
+                    row:=row+1.25;
+                ENDWHILE
+                column:=column+1.25;
+            ENDWHILE
+            height:=height+1.05;
+        ENDWHILE
+        TPWrite "Program Finished";
+        MoveL Grab_clear,v100,fine,Pneumatic_Gripper\WObj:=wobj0;       
+    ENDPROC
+
+    PROC MoveBlock()
+        WaitPLC;
+        MoveL Grab_clear,v100,fine,Pneumatic_Gripper\WObj:=wobj0;
+        MoveL Grab_block,v100,fine,Pneumatic_Gripper\WObj:=wobj0;
+        SetDO D652_10_DO1, high;
+        MoveL Grab_clear,v100,fine,Pneumatic_Gripper\WObj:=wobj0;
+        MoveL RelTool (Block_clear,column,-row,height), v100, fine, Pneumatic_Gripper\WObj:=j0;
+        MoveL RelTool (Block_down,column,-row,height), v100, fine, Pneumatic_Gripper\WObj:=j0;
+        SetDO D652_10_DO2, low;
+        MoveL RelTool (Block_clear,column,-row,height), v100, fine, Pneumatic_Gripper\WObj:=j0;
+    ENDPROC
+
+    PROC WaitPLC()
+        IF D652_10_DI8 = low THEN
+            SetDO D652_10_DO8, low;   
+            TPErase;
+            UIMsgBox
+                \Header:="Out of Blocks",
+                "Please add more blocks to the feeder and click OK, or click Cancel to stop program execution"
+                \Buttons:=btnOKCancel
+                \Icon:=iconInfo
+                \Result:=answer;
+            IF answer != resOK THEN
+                TPErase;
+                TPWrite "Program finished execution";
+                MoveL Grab_clear,v100,fine,Pneumatic_Gripper\WObj:=wobj0;  
+                EXIT;
+            ELSE
+                WaitDI D652_10_DI8, high;
+                TPErase;
+            ENDIF
+        ENDIF
+        TPWrite "Placing next block";
+        SetDO D652_10_DO8, high;
+    ENDPROC
+
+    PROC Palletize()
+        MoveL Grab_clear,v100,fine,Pneumatic_Gripper\WObj:=wobj0;
+        MoveL Grab_block,v100,fine,Pneumatic_Gripper\WObj:=wobj0;
+        MoveL Grab_clear,v100,fine,Pneumatic_Gripper\WObj:=wobj0;
+        MoveL Block_clear,v100,fine,Pneumatic_Gripper\WObj:=wobj0;
+        MoveL Block_down,v100,fine,Pneumatic_Gripper\WObj:=wobj0;
+        MoveL Block_clear,v100,fine,Pneumatic_Gripper\WObj:=wobj0;
+        
+    ENDPROC
+    PROC Reference_Objects()
+        MoveL Grab_clear,v50,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL Grab_block,v50,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL Grab_clear,v100,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL FL_clear,v50,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL FL_ref,v50,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL RL_clear,v50,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL RL_ref,v50,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL RR_clear,v50,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL RR_ref,v50,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL FR_clear,v50,fine,Pointer_Tool\WObj:=wobj0;
+        MoveL FR_ref,v50,fine,Pointer_Tool\WObj:=wobj0;
+    ENDPROC
+ENDMODULE
