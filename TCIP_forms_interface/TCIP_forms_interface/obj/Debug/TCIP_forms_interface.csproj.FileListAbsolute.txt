@@ -1,0 +1,12 @@
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\bin\Debug\TCIP_forms_interface.exe.config
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\bin\Debug\TCIP_forms_interface.exe
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\bin\Debug\TCIP_forms_interface.pdb
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\bin\Debug\SimpleTCP.dll
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\obj\Debug\TCIP_forms_interface.csprojAssemblyReference.cache
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\obj\Debug\TCIP_forms_interface.Form1.resources
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\obj\Debug\TCIP_forms_interface.Properties.Resources.resources
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\obj\Debug\TCIP_forms_interface.csproj.GenerateResource.cache
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\obj\Debug\TCIP_forms_interface.csproj.CoreCompileInputs.cache
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\obj\Debug\TCIP_forms_interface.csproj.CopyComplete
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\obj\Debug\TCIP_forms_interface.exe
+C:\Users\pdevasconcellos\source\repos\TCIP_forms_interface\TCIP_forms_interface\obj\Debug\TCIP_forms_interface.pdb
