@@ -15,14 +15,43 @@ MODULE Module1
 	CONST robtarget place_6:=[[219.327,-1145.238,280],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget place_7_clear:=[[253.991,-1145.238,405],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget place_7:=[[253.991,-1145.238,280],[0,0,-0.707106781,0.707106781],[-2,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PROC main()
-        Play_1;
-        Play_2;
-        Play_3;
-        Play_4;
-        Play_5;
-        Play_6;
-        Play_7;
+    VAR socketdev serverSocket;
+	VAR socketdev clientSocket;
+	VAR string decision;
+	VAR string gamedone:=0;
+	VAR string winner:=0;
+
+	
+	PROC main()
+		WHILE gamedone=0 DO
+			!Add wait until buttom on flex pendant is pressed
+			GetAIDec;
+			!Now process input
+			IF result="1" THEN
+				Play_1;
+			ELSEIF result="2" THEN
+				Play_2;
+			ELSEIF result="3" THEN
+				Play_3;
+			ELSEIF result="4" THEN
+				Play_4;
+			ELSEIF result="5" THEN
+				Play_5;
+			ELSEIF result="6" THEN
+				Play_6;
+			ELSEIF result="7" THEN
+				Play_7;
+			ELSEIF result="8" THEN
+				!Handle ERROR
+				stop;
+			ELSE
+				gamedone:=1
+				winner:=decision
+				!in this case we have 0 is a tie -1 player won -2 robot won
+			ENDIF
+		ENDWHILE
+		!Handle end of the game like kicking the board
+
     ENDPROC
 !    PROC Suction_Gripper()
 !        SetDO D652_10_D01, low;
@@ -108,5 +137,38 @@ MODULE Module1
 !        Release_Gripper;
 	    MoveL place_7_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
+	ENDPROC
+
+	PROC GetAIDec()
+		decision:=8;
+		SocketCreate serverSocket;
+		SocketBind serverSocket, "127.0.0.1", 5000;
+		SocketListen serverSocket;
+
+		SocketAccept serverSocket, clientSocket, \Time:=WAIT_MAX;
+
+		SocketReceive clientSocket \Str:=decision;
+		SocketSend clientSocket \Str:="received";
+
+		SocketClose clientSocket;
+		SocketClose serverSocket;
+
+		ERROR 
+
+		IF ERRNO=ERR_SOCK_TIMEOUT THEN
+			RETRY;
+		ELSEIF ERRNO=ERR_SOCK_CLOSED THEN
+			SocketClose clientSocket;
+			SocketClose serverSocket;
+			SocketCreate serverSocket;
+			SocketBind serverSocket, "127.0.0.1", 5000;
+			SocketListen serverSocket;
+
+			SocketAccept serverSocket, clientSocket, \Time:=WAIT_MAX;
+
+			RETRY
+		ELSE
+			stop;
+		ENDIF
 	ENDPROC
 ENDMODULE
