@@ -12,19 +12,20 @@ namespace TCIP_forms_interface
     {
         public String makeDecision()
         {
-            return "";
+            return askTheAI(seeGrid());
         }
 
-        private int askTheAI(int[,] grid)
+        private String askTheAI(String grid)
         {
-            return 0;
+            var cmd = "python";
+            var args = "alpha_beta_agent.py " + grid;
+
+            return run_python_code(cmd, args);
         }
 
-        private int[,] seeGrid()
+        private String seeGrid()
         {
-            String stream = run_python_code("python", "wagner.py");
-            var grid = new int[6, 7];
-            //TODO: parse strem into grid
+            String grid = run_python_code("python", "CameraVision.py");
             return grid;
         }
 

@@ -2,6 +2,7 @@ import math
 import agent
 import time
 import sys
+from board import Board
 from functools import reduce
 
 ###########################
@@ -159,5 +160,11 @@ class AlphaBetaAgent(agent.Agent):
 THE_AGENT = AlphaBetaAgent("DeVasconcellosOportoPedro", [0,10,50,5000,1000000], 0.35)
 
 if __name__ == "__main__":
-	for arg in sys.argv:
-		print(arg)
+    rows = sys.argv[2].split('-')
+    grid = []
+    for row in rows:
+        grid.append(row.split(','))
+    board = new Board(grid,7,6,4);
+    decision = THE_AGENT.go(board)
+    print(decision)
+    return decision
