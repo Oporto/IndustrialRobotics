@@ -4,77 +4,18 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button, RadioButtons
 import time
 
-class CameraVisionTest:
-#Make sure camera is 22 cm away from center of board
+class CameraVision:
     def __init__(self):
         start = time.time()
-        self.oldCam = cv2.VideoCapture(0)
-        self.newCam = cv2.VideoCapture(1)
-        self.blueMaskLower = np.array([90, 90, 0])
-        self.blueMaskUpper = np.array([120, 255, 255])
         self.yellowMaskLower = np.array([20, 147, 132])
         self.yellowMaskUpper = np.array([100, 255, 255])
-        self.redMaskLower = np.array([0, 0, 200])
+        self.redMaskLower = np.array([0, 130, 200])
         self.redMaskUpper = np.array([20, 255, 255])
         self.row_size = 59
         self.column_size = 65
-        self.name = ''
-        isCamera = False
-        isChip = False
-        while not isCamera:
-            # camera = input('Choose a camera number [0 - Webcam, 1 - Connected Camera]:\n')
-            camera = 1
-            if camera < 0 or camera > 1:
-                print('%d is not a valid camera, please enter a new number'.format(camera))
-                continue
-            else:
-                self.webcam = cv2.VideoCapture(camera)
-                isCamera = True
-        while not isChip:
-            # color = input('What chip color is the Player [0 - Red, 1 - Yellow]:\n')
-            color = 0
-            if color < 0 or color > 1:
-                print('%d is currently not a valid chip, please choose a valid value')
-                continue
-            else:
-                self.playColor = color
-                isChip = True
-        end = time.time()
+        self.webcam = cv2.VideoCapture(1)
+        self.playColor = 0
         print(end - start)
-
-    def test_run(self):
-        isPass = False
-        while isPass == False:
-            camera = input('Choose a camera number [0 - Webcam, 1 - Connected Camera]:\n')
-            if camera < 0 or camera > 1:
-                print('%d is not a valid camera, please enter a new number'.format(camera))
-                continue
-            color = input('Pick a color to mask for [0 - Blue, 1 - Red, 2 - Yellow]:\n')
-            if color < 0 or color > 2:
-                print('%d is currently not supported, please choose a valid color')
-                continue
-            else:
-                self.cam = camera
-                isPass = True
-        webcam = cv2.VideoCapture(self.cam)
-        while True:
-            _, img = webcam.read()
-            #cv2.imshow('test', img)
-            if color == 0:
-                image_arr = self.maskFor(img, self.blueMaskLower, self.blueMaskUpper)
-            elif color == 1:
-                image_arr = self.maskFor(img, self.redMaskLower, self.redMaskUpper)
-            elif color == 2:
-                image_arr = self.maskFor(img, self.yellowMaskLower, self.yellowMaskUpper)
-            else:
-                break
-            cv2.imshow('Original', image_arr[0])
-            cv2.imshow('Masked', image_arr[1])
-            cv2.imshow('Threshold', image_arr[2])
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-        webcam.release()
-        cv2.destroyAllWindows()
 
     def maskFor(self, image, lowerLimit, upperLimit):
         img_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -177,17 +118,14 @@ class CameraVisionTest:
         else:
             abbArr = self.maskFor(img, self.redMaskLower, self.redMaskUpper)
         abbCoord = self.locate_chips(img, abbArr[2], False)
-        print playerCoord
-        print abbCoord
         # Display the original and masked images for visual inspection of results
-        cv2.imshow('Original', img)
-        cv2.imshow('Player', playArr[2])
-        cv2.imshow('ABB', abbArr[2])
+        # cv2.imshow('Original', img)
+        # cv2.imshow('Player', playArr[2])
+        # cv2.imshow('ABB', abbArr[2])
         # uncomment to enable the user to manually send the grid after inspecting the images
         # cv2.waitKey()
         game_board = self.cvtLocation(playerCoord, game_board, True)
         game_board = self.cvtLocation(abbCoord, game_board, False)
-
         # Display run time of current script
         end = time.time()
         print("runtime: ")
@@ -200,8 +138,7 @@ class CameraVisionTest:
 
 
 if __name__ == '__main__':
-    cvt = CameraVisionTest()
-    # cvt.test_run()
+    cvt = CameraVision()
     print('Program is ready')
     command = raw_input("Analyze board? (y/n))\n")
     isDone = False
