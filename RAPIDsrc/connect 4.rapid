@@ -142,7 +142,7 @@ MODULE Module1
 	PROC GetAIDec()
 		decision:=8;
 		SocketCreate serverSocket;
-		SocketBind serverSocket, "127.0.0.1", 5000;
+		SocketBind serverSocket, "192.168.100.100", 5000;
 		SocketListen serverSocket;
 
 		SocketAccept serverSocket, clientSocket, \Time:=WAIT_MAX;
@@ -161,7 +161,7 @@ MODULE Module1
 			SocketClose clientSocket;
 			SocketClose serverSocket;
 			SocketCreate serverSocket;
-			SocketBind serverSocket, "127.0.0.1", 5000;
+			SocketBind serverSocket, "192.168.100.100", 5000;
 			SocketListen serverSocket;
 
 			SocketAccept serverSocket, clientSocket, \Time:=WAIT_MAX;

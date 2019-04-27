@@ -55,7 +55,7 @@ namespace TCIP_forms_interface
             this.textHost.Name = "textHost";
             this.textHost.Size = new System.Drawing.Size(118, 26);
             this.textHost.TabIndex = 2;
-            this.textHost.Text = "127.0.0.1";
+            this.textHost.Text = "192.168.100.100";
             this.textHost.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
             // textPort
@@ -64,7 +64,7 @@ namespace TCIP_forms_interface
             this.textPort.Name = "textPort";
             this.textPort.Size = new System.Drawing.Size(69, 26);
             this.textPort.TabIndex = 5;
-            this.textPort.Text = "8910";
+            this.textPort.Text = "5000";
             this.textPort.TextChanged += new System.EventHandler(this.TextBox2_TextChanged);
             // 
             // labelPort
@@ -105,7 +105,7 @@ namespace TCIP_forms_interface
             this.nextTurnBnt.UseVisualStyleBackColor = true;
             this.nextTurnBnt.Click += new System.EventHandler(this.Button1_Click_1);
             // 
-            // Form1
+            // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -117,7 +117,7 @@ namespace TCIP_forms_interface
             this.Controls.Add(this.labelPort);
             this.Controls.Add(this.textHost);
             this.Controls.Add(this.HostLab);
-            this.Name = "Form1";
+            this.Name = "ClientForm";
             this.Text = "Client";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
