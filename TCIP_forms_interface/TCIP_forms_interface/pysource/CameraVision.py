@@ -139,25 +139,11 @@ class CameraVision:
 
 if __name__ == '__main__':
     cvt = CameraVision()
-    print('Program is ready')
-    command = raw_input("Analyze board? (y/n))\n")
-    isDone = False
-    while not isDone:
-        if str(command) == str("y"):
-            while True:
-                result = cvt.run()
-                print result
-                command = raw_input("Analyze board? (y/n)\n")
-                if str(command) == str("y"):
-                    continue
-                elif str(command) == str("n"):
-                    print('Exiting Program')
-                    break
-            isDone = True
-        elif str(command) == str("n"):
-            print('Aborting program')
-            isDone = True
-        else:
-            print('Not a valid input.  Try again \n')
-            continue
+    result = cvt.run()
+    str_rows = []
+    for row in result:
+        str_rows.append(row.join(','))
+    str_result = str_rows.join('-')
+    print(str_result)
     cvt.abort()
+    return str_result
