@@ -127,7 +127,7 @@ namespace TCIP_forms_interface
 
         private void TextStatus_TextChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            
         }
 
         private void Label2_Click(object sender, EventArgs e)

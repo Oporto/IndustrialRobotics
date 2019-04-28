@@ -144,5 +144,7 @@ if __name__ == '__main__':
         str_row = [str(i) for i in row]
         str_rows.append(",".join(str_row))
     str_result = "-".join(str_rows)
-    print(str_result)
+    f = open("board.txt", "w")
+    f.write(str_result)
+    f.close()
     cvt.abort()
