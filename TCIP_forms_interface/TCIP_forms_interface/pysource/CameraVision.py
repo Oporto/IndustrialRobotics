@@ -15,7 +15,6 @@ class CameraVision:
         self.column_size = 65
         self.webcam = cv2.VideoCapture(1)
         self.playColor = 0
-        print(end - start)
 
     def maskFor(self, image, lowerLimit, upperLimit):
         img_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -142,8 +141,8 @@ if __name__ == '__main__':
     result = cvt.run()
     str_rows = []
     for row in result:
-        str_rows.append(row.join(','))
-    str_result = str_rows.join('-')
+        str_row = [str(i) for i in row]
+        str_rows.append(",".join(str_row))
+    str_result = "-".join(str_rows)
     print(str_result)
     cvt.abort()
-    return str_result

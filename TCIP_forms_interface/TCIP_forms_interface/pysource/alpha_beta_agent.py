@@ -37,19 +37,19 @@ class AlphaBetaAgent(agent.Agent):
             depth = 6
         else:
             depth = (state.h * state.w) - turn
-        return depth;
+        return depth
     # Computes the value, action of a max value node in pruning
     def __max_value(self, state, depth, alpha, beta):
         win_state = state.get_outcome()
         if win_state == state.player:
-            return self.__score_weights[4], -1;
+            return self.__score_weights[4], -1
         elif win_state != 0:
-            return -self.__score_weights[4], -1;
+            return -self.__score_weights[4], -1
         if len(state.free_cols()) == 0:
-            return 0, -1;
+            return 0, -1
         if depth >= 0:
             utility = self.__utility(state.board, state.player)
-            return utility, -1;
+            return utility, -1
         
         else:
             best = (-math.inf,-1)
@@ -59,20 +59,20 @@ class AlphaBetaAgent(agent.Agent):
                     best = (new_utility, a)
                 alpha = max(alpha, best[0])
                 if best[0] >= beta:
-                    return best;
-        return best;
+                    return best
+        return best
     # Computes the value, action of a max value node in pruning
     def __min_value(self, state, depth, alpha, beta):
         
         win_state = state.get_outcome()
         if win_state == state.player:
-            return self.__score_weights[4];
+            return self.__score_weights[4]
         elif win_state != 0:
-            return -self.__score_weights[4];
+            return -self.__score_weights[4]
         if len(state.free_cols()) == 0:
             return 0
         if depth >= 0:
-            return self.__utility(state.board, state.player);
+            return self.__utility(state.board, state.player)
         else:
             worst = math.inf
 
@@ -81,8 +81,8 @@ class AlphaBetaAgent(agent.Agent):
                 worst = min(worst, new_utility)
                 beta = min(beta, worst)
                 if worst <= alpha:
-                    return worst;
-        return worst;
+                    return worst
+        return worst
             
         
     # Pick a column for the agent to play (External interface).
@@ -93,7 +93,7 @@ class AlphaBetaAgent(agent.Agent):
         utility, action = self.__max_value(brd, depth, -math.inf, math.inf)
         if action < 0 or action > 6:
             action = abs(action % 7) #This line should not be relevant unless something goes wrong and the function returns an action
-        return action;
+        return action
 
     # Get the successors of the given board.
     def __get_successors(self, brd):
@@ -102,7 +102,7 @@ class AlphaBetaAgent(agent.Agent):
         freecols = brd.free_cols()
         # Are there legal actions left?
         if not freecols:
-            return [];
+            return []
         # Make a list of the new boards along with the corresponding actions
         succ = []
         for col in freecols:
@@ -113,7 +113,7 @@ class AlphaBetaAgent(agent.Agent):
             nb.add_token(col)
             # Add board to list of successors
             succ.append((nb,col))
-        return succ;
+        return succ
 
     #Utility function that takes a board_state and its player value
     def __utility(self, board_state, player):
@@ -132,7 +132,7 @@ class AlphaBetaAgent(agent.Agent):
                         #Checks for off-bounds steps
                         if i_step >= self.__board_x or i_step < 0 or j_step >= self.__board_y or j_step < 0:
                             sequence = 0 #Reset sequence value to 0
-                            break;
+                            break
                             
                         next = board_state[i_step][j_step] #Gets next cell
                         if this == 0 and next > 0:
@@ -141,11 +141,11 @@ class AlphaBetaAgent(agent.Agent):
                             sequence = 1
                         elif this != next:
                             if next == 0:
-                                continue;
+                                continue
                             # If the cells dont match and are from different players, this sequence cant be a winning sequence for either
                             # Resets sequence to 0
                             sequence = 0
-                            break;
+                            break
                         else:
                             # Else, the piece is from the same player and the sequence count increases
                             if this > 0:
@@ -155,16 +155,15 @@ class AlphaBetaAgent(agent.Agent):
         score = self.__offensiveness * scores[0] - (1 - self.__offensiveness) * scores[1]
         if player == 2:
             score = -1 * score
-        return score; #Returns the score for the state
+        return score #Returns the score for the state
 #Final agent for class tournament (After testing and crude optimization)
 THE_AGENT = AlphaBetaAgent("DeVasconcellosOportoPedro", [0,10,50,5000,1000000], 0.35)
 
 if __name__ == "__main__":
-    rows = sys.argv[2].split('-')
+    rows = sys.argv[1].split('-')
     grid = []
     for row in rows:
         grid.append(row.split(','))
-    board = new Board(grid,7,6,4);
+    board = Board(grid,7,6,4)
     decision = THE_AGENT.go(board)
     print(decision)
-    return decision
