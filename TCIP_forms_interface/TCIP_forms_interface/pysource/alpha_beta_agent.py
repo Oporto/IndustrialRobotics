@@ -4,6 +4,7 @@ import time
 import sys
 import copy
 from functools import reduce
+import CameraVision
 
 ##############
 # Game Board #
@@ -267,6 +268,7 @@ def __utility(board_state, player):
     return score #Returns the score for the state
 
 if __name__ == "__main__":
+    CameraVision.camera_main()
     f = open("board.txt", "r")
     str_board = f.read()
     f.close()
@@ -277,7 +279,5 @@ if __name__ == "__main__":
         int_row = [int(c) if c == "1" or c == "2" else 0 for c in str_row]
         grid.append(int_row)
     board = Board(grid,7,6,4)
-    decision = go(board)
-    f2 = open("decision.txt", "w")
-    f2.write(str(decision))
-    f2.close()
+    decision = go(board) + 1
+    print(decision)

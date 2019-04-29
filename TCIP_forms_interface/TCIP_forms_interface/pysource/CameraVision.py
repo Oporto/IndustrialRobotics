@@ -136,7 +136,7 @@ class CameraVision:
         cv2.destroyAllWindows()
 
 
-if __name__ == '__main__':
+def camera_main():
     cvt = CameraVision()
     result = cvt.run()
     str_rows = []
