@@ -136,15 +136,3 @@ class CameraVision:
         cv2.destroyAllWindows()
 
 
-def camera_main():
-    cvt = CameraVision()
-    result = cvt.run()
-    str_rows = []
-    for row in result:
-        str_row = [str(i) for i in row]
-        str_rows.append(",".join(str_row))
-    str_result = "-".join(str_rows)
-    f = open("board.txt", "w")
-    f.write(str_result)
-    f.close()
-    cvt.abort()

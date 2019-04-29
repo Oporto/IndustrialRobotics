@@ -4,7 +4,6 @@ import time
 import sys
 import copy
 from functools import reduce
-import CameraVision
 
 ##############
 # Game Board #
@@ -143,10 +142,8 @@ def __depth_heuristic(state):
         for c in r:
             if c != 0:
                 turn += 1
-    print("turns", turn)
-    if turn < 2 * state.h + state.w:
-        depth = 4
-    elif (turn < (state.h-2) * (state.w-1) and state.n == 4) or turn < (state.h-1) * (state.w-1):
+    print("Turn: ", turn)
+    if (turn < (state.h-2) * (state.w-1) and state.n == 4) or turn < (state.h-1) * (state.w-1):
         depth = 6
     else:
         depth = (state.h * state.w) - turn
@@ -267,17 +264,11 @@ def __utility(board_state, player):
         score = -1 * score
     return score #Returns the score for the state
 
-if __name__ == "__main__":
-    CameraVision.camera_main()
-    f = open("board.txt", "r")
-    str_board = f.read()
-    f.close()
-    rows = str_board.split('-')
-    grid = []
-    for row in rows:
-        str_row = row.split(',')
-        int_row = [int(c) if c == "1" or c == "2" else 0 for c in str_row]
-        grid.append(int_row)
+def makeDecision(grid):
     board = Board(grid,7,6,4)
-    decision = go(board) + 1
-    print(decision)
+    outcome = board.get_outcome()
+    if outcome != 0:
+        decision = -1*outcome
+    else:
+        decision = go(board) + 1
+    return decision
