@@ -23,118 +23,116 @@ MODULE Module1
 
 	
 	PROC main()
-		WHILE gamedone=0 DO
-			!Add wait until buttom on flex pendant is pressed
-			GetAIDec;
-			!Now process input
-			IF result="1" THEN
-				Play_1;
-			ELSEIF result="2" THEN
-				Play_2;
-			ELSEIF result="3" THEN
-				Play_3;
-			ELSEIF result="4" THEN
-				Play_4;
-			ELSEIF result="5" THEN
-				Play_5;
-			ELSEIF result="6" THEN
-				Play_6;
-			ELSEIF result="7" THEN
-				Play_7;
-			ELSEIF result="8" THEN
-				!Handle ERROR
-				stop;
-			ELSE
-				gamedone:=1
-				winner:=decision
-				!in this case we have 0 is a tie -1 player won -2 robot won
-			ENDIF
-		ENDWHILE
+		!Add wait until buttom on flex pendant is pressed
+		GetAIDec;
+		!Now process input
+		IF result="1" THEN
+			Play_1;
+		ELSEIF result="2" THEN
+			Play_2;
+		ELSEIF result="3" THEN
+			Play_3;
+		ELSEIF result="4" THEN
+			Play_4;
+		ELSEIF result="5" THEN
+			Play_5;
+		ELSEIF result="6" THEN
+			Play_6;
+		ELSEIF result="7" THEN
+			Play_7;
+		ELSEIF result="8" THEN
+			!Handle ERROR
+			stop;
+		ELSE
+			gamedone:=1
+			winner:=decision
+			!in this case we have 0 is a tie -1 player won -2 robot won
+		ENDIF
 		!Handle end of the game like kicking the board
 
     ENDPROC
-!    PROC Suction_Gripper()
-!        SetDO D652_10_D01, low;
-!        WaitTime 0.5;
-!    ENDPROC
-!    PROC Release_Gripper()
-!        SetDO D652_10_D01, high;
-!        WaitTime 0.5;
-!    ENDPROC
+    PROC Suction_Gripper()
+        SetDO D652_10_D01, low;
+        WaitTime 0.5;
+    ENDPROC
+    PROC Release_Gripper()
+        SetDO D652_10_D01, high;
+        WaitTime 0.5;
+	ENDPROC
 	PROC Play_1()
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
-!        Suction_Gripper;
+        Suction_Gripper;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_1_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_1,v100,fine,Gripper\WObj:=wobj0;
-!        Release_Gripper;
+        Release_Gripper;
 	    MoveL place_1_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	ENDPROC
 	PROC Play_2()
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
-!        Suction_Gripper;
+        Suction_Gripper;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_2_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_2,v100,fine,Gripper\WObj:=wobj0;
-!        Release_Gripper;
+        Release_Gripper;
 	    MoveL place_2_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	ENDPROC
 	PROC Play_3()
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
-!        Suction_Gripper;
+        Suction_Gripper;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_3_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_3,v100,fine,Gripper\WObj:=wobj0;
-!        Release_Gripper;
+        Release_Gripper;
 	    MoveL place_3_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	ENDPROC
 	PROC Play_4()
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
-!        Suction_Gripper;
+        Suction_Gripper;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_4_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_4,v100,fine,Gripper\WObj:=wobj0;
-!        Release_Gripper;
+        Release_Gripper;
 	    MoveL place_4_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	ENDPROC
 	PROC Play_5()
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
-!        Suction_Gripper;
+        Suction_Gripper;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_5_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_5,v100,fine,Gripper\WObj:=wobj0;
-!        Release_Gripper;
+        Release_Gripper;
 	    MoveL place_5_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	ENDPROC
 	PROC Play_6()
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
-!        Suction_Gripper;
+        Suction_Gripper;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_6_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_6,v100,fine,Gripper\WObj:=wobj0;
-!        Release_Gripper;
+        Release_Gripper;
 	    MoveL place_6_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	ENDPROC
 	PROC Play_7()
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL pickup_chip,v100,fine,Gripper\WObj:=wobj0;
-!        Suction_Gripper;
+        Suction_Gripper;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_7_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL place_7,v100,fine,Gripper\WObj:=wobj0;
-!        Release_Gripper;
+        Release_Gripper;
 	    MoveL place_7_clear,v200,fine,Gripper\WObj:=wobj0;
 	    MoveL clearance_chip,v200,fine,Gripper\WObj:=wobj0;
 	ENDPROC
