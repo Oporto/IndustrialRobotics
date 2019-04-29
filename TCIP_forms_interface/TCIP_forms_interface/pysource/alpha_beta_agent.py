@@ -125,227 +125,146 @@ class Board(object):
             print(i, end='')
         print("")
 
-#####################
-# Agent definitions #
-#####################
-
-
-
-##################
-# Abstract agent #
-##################
-
-class Agent(object):
-    """Abstract agent class"""
-
-    # Class constructor.
-    #
-    # PARAM [string] name: the name of this player
-    def __init__(self, name):
-        """Class constructor"""
-        # Agent name
-        self.name = name
-        # Uninitialized player - will be set upon starting a Game
-        self.player = 0
-
-    # Pick a column.
-    #
-    # PARAM [board.Board] brd: the current board state
-    # RETURN [int]: the column where the token must be added
-    def go(self, brd):
-        """Returns a column between 0 and (brd.w-1). The column must be free in the board."""
-        raise NotImplementedError("Please implement this method")
-
-
-
-##########################
-# Randomly playing agent #
-##########################
-
-class RandomAgent(Agent):
-    """Randomly playing agent"""
-
-    # Pick a column at random.
-    #
-    # PARAM [board.Board] brd: the current board state
-    # RETURN [int]: the column where the token must be added
-    def go(self, brd):
-        return random.choice(brd.free_cols())
-
-
-
-#####################
-# Interactive Agent #
-#####################
-
-class InteractiveAgent(Agent):
-    """Interactive player"""
-
-    # Ask a human to pick a column.
-    #
-    # PARAM [board.Board] brd: the current board state (ignored)
-    # RETURN [int]: the column where the token must be added
-    def go(self, brd):
-        freecols = brd.free_cols()
-        col = int(input("Which column? "))
-        while not col in freecols:
-            print("Can't place a token in column", col)
-            col = int(input("Which column? "))
-        return col
 
 ###########################
 # Alpha-Beta Search Agent #
 ###########################
 
-class AlphaBetaAgent(Agent):
-    """Agent that uses alpha-beta search"""
-
-    # Class constructor.
-    def __init__(self, name, score_weights, offensiveness):
-        super().__init__(name)
-        # Max search depth
-        self.__score_weights = score_weights
-        self.__offensiveness = offensiveness
+__score_weights = [0,10,50,5000,1000000]
+__offensiveness = 0.35
+__board_x = 6
+__board_y = 7
+__connect_n = 4
     # Heuristic that determines the maximum depth based on turn
-    def __depth_heuristic(self, state):
-        turn = 0
-        for r in state.board:
-            for c in r:
-                if c != 0:
-                    turn += 1
-        if turn < 2:
-            self.__board_x = state.h
-            self.__board_y = state.w
-            self.__connect_n = state.n
-        if turn <state.h:
-            depth = 2
-        elif turn < 2 * state.h + state.w:
-            depth = 4
-        elif (turn < (state.h-2) * (state.w-1) and state.n == 4) or turn < (state.h-1) * (state.w-1):
-            depth = 6
-        else:
-            depth = (state.h * state.w) - turn
-        return depth
+def __depth_heuristic(state):
+    turn = 0
+    for r in state.board:
+        for c in r:
+            if c != 0:
+                turn += 1
+    print("turns", turn)
+    if turn < 2 * state.h + state.w:
+        depth = 4
+    elif (turn < (state.h-2) * (state.w-1) and state.n == 4) or turn < (state.h-1) * (state.w-1):
+        depth = 6
+    else:
+        depth = (state.h * state.w) - turn
+    return depth
     # Computes the value, action of a max value node in pruning
-    def __max_value(self, state, depth, alpha, beta):
-        win_state = state.get_outcome()
-        if win_state == state.player:
-            return self.__score_weights[4], -1
-        elif win_state != 0:
-            return -self.__score_weights[4], -1
-        if len(state.free_cols()) == 0:
-            return 0, -1
-        if depth >= 0:
-            utility = self.__utility(state.board, state.player)
-            return utility, -1
-        
-        else:
-            best = (-math.inf,-1)
-            for s, a in self.__get_successors(state):
-                new_utility = self.__min_value(s, depth + 1, alpha, beta)
-                if new_utility >= best[0]:
-                    best = (new_utility, a)
-                alpha = max(alpha, best[0])
-                if best[0] >= beta:
-                    return best
-        return best
-    # Computes the value, action of a max value node in pruning
-    def __min_value(self, state, depth, alpha, beta):
-        
-        win_state = state.get_outcome()
-        if win_state == state.player:
-            return self.__score_weights[4]
-        elif win_state != 0:
-            return -self.__score_weights[4]
-        if len(state.free_cols()) == 0:
-            return 0
-        if depth >= 0:
-            return self.__utility(state.board, state.player)
-        else:
-            worst = math.inf
+def __max_value(state, depth, alpha, beta):
+    win_state = state.get_outcome()
+    if win_state == state.player:
+        return __score_weights[4], -1
+    elif win_state != 0:
+        return -__score_weights[4], -1
+    if len(state.free_cols()) == 0:
+        return 0, -1
+    if depth >= 0:
+        utility = __utility(state.board, state.player)
+        return utility, -1
+    
+    else:
+        best = (-math.inf,-1)
+        for s, a in __get_successors(state):
+            new_utility = __min_value(s, depth + 1, alpha, beta)
+            if new_utility >= best[0]:
+                best = (new_utility, a)
+            alpha = max(alpha, best[0])
+            if best[0] >= beta:
+                return best
+    return best
+# Computes the value, action of a max value node in pruning
+def __min_value(state, depth, alpha, beta):
+    
+    win_state = state.get_outcome()
+    if win_state == state.player:
+        return __score_weights[4]
+    elif win_state != 0:
+        return -__score_weights[4]
+    if len(state.free_cols()) == 0:
+        return 0
+    if depth >= 0:
+        return __utility(state.board, state.player)
+    else:
+        worst = math.inf
 
-            for s, a in self.__get_successors(state):
-                new_utility, a = self.__max_value(s, depth + 1, alpha, beta)
-                worst = min(worst, new_utility)
-                beta = min(beta, worst)
-                if worst <= alpha:
-                    return worst
-        return worst
+        for s, __ in __get_successors(state):
+            new_utility, __ = __max_value(s, depth + 1, alpha, beta)
+            worst = min(worst, new_utility)
+            beta = min(beta, worst)
+            if worst <= alpha:
+                return worst
+    return worst
             
         
-    # Pick a column for the agent to play (External interface).
-    def go(self, brd):
-        """Search for the best move (choice of column for the token)"""
-        turn = 0
-        depth = -self.__depth_heuristic(brd)
-        utility, action = self.__max_value(brd, depth, -math.inf, math.inf)
-        if action < 0 or action > 6:
-            action = abs(action % 7) #This line should not be relevant unless something goes wrong and the function returns an action
-        return action
+# Pick a column for the agent to play (External interface).
+def go(brd):
+    """Search for the best move (choice of column for the token)"""
+    depth = -__depth_heuristic(brd)
+    __, action = __max_value(brd, depth, -math.inf, math.inf)
+    return action
 
     # Get the successors of the given board.
-    def __get_successors(self, brd):
-        """Returns the reachable boards from the given board brd. The return value is a tuple (new board state, column number where last token was added)."""
-        # Get possible actions
-        freecols = brd.free_cols()
-        # Are there legal actions left?
-        if not freecols:
-            return []
-        # Make a list of the new boards along with the corresponding actions
-        succ = []
-        for col in freecols:
-            # Clone the original board
-            nb = brd.copy()
-            # Add a token to the new board
-            # (This internally changes nb.player, check the method definition!)
-            nb.add_token(col)
-            # Add board to list of successors
-            succ.append((nb,col))
-        return succ
+def __get_successors(brd):
+    """Returns the reachable boards from the given board brd. The return value is a tuple (new board state, column number where last token was added)."""
+    # Get possible actions
+    freecols = brd.free_cols()
+    # Are there legal actions left?
+    if not freecols:
+        return []
+    # Make a list of the new boards along with the corresponding actions
+    succ = []
+    for col in freecols:
+        # Clone the original board
+        nb = brd.copy()
+        # Add a token to the new board
+        # (This internally changes nb.player, check the method definition!)
+        nb.add_token(col)
+        # Add board to list of successors
+        succ.append((nb,col))
+    return succ
 
-    #Utility function that takes a board_state and its player value
-    def __utility(self, board_state, player):
-        scores = [0,0] #Array that stores the score of both players as the function loops through the cells and directions
-        for dx, dy in [(1,0),(1,1),(0,1),(1,-1)]:#Loops through directions/ dx dy combinations
-            for i in range(self.__board_x): #Loops through rows
-                for j in range(self.__board_y): #Loops through columns
-                    this = board_state[i][j] #Gets the value/piece in current cell (0-empty, 1-current player, 2-opponent)
-                    sequence = 1 if this != 0 else 0 #Initializes the sequence size if the first cell is not empty
-                    #Iterative variables for step
-                    i_step = i
-                    j_step = j
-                    for step in range(self.__connect_n-1): #Iterate steps from current cell
-                        i_step += dx
-                        j_step += dy
-                        #Checks for off-bounds steps
-                        if i_step >= self.__board_x or i_step < 0 or j_step >= self.__board_y or j_step < 0:
-                            sequence = 0 #Reset sequence value to 0
-                            break
-                            
-                        next = board_state[i_step][j_step] #Gets next cell
-                        if this == 0 and next > 0:
-                            # If all cells so far were empty and the next is not, update this sequence to match the player with piece on next cell
-                            this = next
-                            sequence = 1
-                        elif this != next:
-                            if next == 0:
-                                continue
-                            # If the cells dont match and are from different players, this sequence cant be a winning sequence for either
-                            # Resets sequence to 0
-                            sequence = 0
-                            break
-                        else:
-                            # Else, the piece is from the same player and the sequence count increases
-                            if this > 0:
-                                sequence += 1
-                        #Adds score based on sequence and weights predefined in the class
-                    scores[this-1] += self.__score_weights[sequence]
-        score = self.__offensiveness * scores[0] - (1 - self.__offensiveness) * scores[1]
-        if player == 2:
-            score = -1 * score
-        return score #Returns the score for the state
-#Final agent for class tournament (After testing and crude optimization)
-THE_AGENT = AlphaBetaAgent("DeVasconcellosOportoPedro", [0,10,50,5000,1000000], 0.35)
+#Utility function that takes a board_state and its player value
+def __utility(board_state, player):
+    scores = [0,0] #Array that stores the score of both players as the function loops through the cells and directions
+    for dx, dy in [(1,0),(1,1),(0,1),(1,-1)]:#Loops through directions/ dx dy combinations
+        for i in range(__board_x): #Loops through rows
+            for j in range(__board_y): #Loops through columns
+                this = board_state[i][j] #Gets the value/piece in current cell (0-empty, 1-current player, 2-opponent)
+                sequence = 1 if this != 0 else 0 #Initializes the sequence size if the first cell is not empty
+                #Iterative variables for step
+                i_step = i
+                j_step = j
+                for step in range(__connect_n-1): #Iterate steps from current cell
+                    i_step += dx
+                    j_step += dy
+                    #Checks for off-bounds steps
+                    if i_step >= __board_x or i_step < 0 or j_step >= __board_y or j_step < 0:
+                        sequence = 0 #Reset sequence value to 0
+                        break
+                        
+                    next = board_state[i_step][j_step] #Gets next cell
+                    if this == 0 and next > 0:
+                        # If all cells so far were empty and the next is not, update this sequence to match the player with piece on next cell
+                        this = next
+                        sequence = 1
+                    elif this != next:
+                        if next == 0:
+                            continue
+                        # If the cells dont match and are from different players, this sequence cant be a winning sequence for either
+                        # Resets sequence to 0
+                        sequence = 0
+                        break
+                    else:
+                        # Else, the piece is from the same player and the sequence count increases
+                        if this > 0:
+                            sequence += 1
+                    #Adds score based on sequence and weights predefined in the class
+                scores[this-1] += __score_weights[sequence]
+    score = __offensiveness * scores[0] - (1 - __offensiveness) * scores[1]
+    if player == 2:
+        score = -1 * score
+    return score #Returns the score for the state
 
 if __name__ == "__main__":
     f = open("board.txt", "r")
@@ -354,9 +273,11 @@ if __name__ == "__main__":
     rows = str_board.split('-')
     grid = []
     for row in rows:
-        grid.append(row.split(','))
+        str_row = row.split(',')
+        int_row = [int(c) if c == "1" or c == "2" else 0 for c in str_row]
+        grid.append(int_row)
     board = Board(grid,7,6,4)
-    decision = THE_AGENT.go(board)
+    decision = go(board)
     f2 = open("decision.txt", "w")
     f2.write(str(decision))
     f2.close()
